@@ -116,7 +116,7 @@ const CharacterCard: React.FC<{ character: Character }> = ({ character }) => {
           <BackButton onClick={handleGoBack} />
         </header>
         
-        <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={character.name} />
+        <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={character.name} isMignolaStyle={true} />
         
         <div className="absolute top-1/2 right-2 -translate-y-1/2 z-10 flex flex-col gap-2">
           {renderSidebarActions()}

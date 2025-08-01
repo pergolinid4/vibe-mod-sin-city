@@ -37,7 +37,7 @@ const MugshotCard: React.FC<{ character: Character }> = ({ character }) => {
           <BackButton onClick={handleGoBack} />
         </header>
         
-        <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={`Mugshot of ${character.name}`} objectFit="contain" />
+        <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={`Mugshot of ${character.name}`} objectFit="contain" isMignolaStyle={true} />
         
         <div className="absolute inset-0 bg-gradient-to-t from-brand-surface to-transparent"></div>
       </div>

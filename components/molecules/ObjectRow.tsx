@@ -30,7 +30,7 @@ const ObjectRow: React.FC<{ object: StoryObject }> = React.memo(({ object }) => 
             className="flex items-center bg-brand-bg p-3 rounded-lg cursor-pointer hover:bg-brand-primary/10 transition-colors duration-200 animate-fade-in border-l-4 border-brand-border hover:border-brand-primary"
         >
             <div className="w-16 h-20 rounded-md overflow-hidden flex-shrink-0 mr-4 border border-brand-border bg-black">
-                <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={object.name} objectFit="cover" />
+                <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={object.name} objectFit="cover" isMignolaStyle={true} />
             </div>
             <div className="flex-1 min-w-0">
                 <h3 className="text-lg font-oswald text-brand-text truncate">{object.name}</h3>

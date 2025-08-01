@@ -12,3 +12,10 @@ body {
   text-rendering: optimizeLegibility;
   hyphens: auto;
 }
+
+/* Mike Mignola style for images */
+.mignola-style {
+  filter: contrast(1.5) saturate(1.2) brightness(0.8); /* Adjust values for desired effect */
+  box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7); /* Deep contrast shadow */
+  border: 2px solid black;
+}

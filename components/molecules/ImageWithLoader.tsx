@@ -13,9 +13,11 @@ interface ImageWithLoaderProps {
   alt: string;
   /** Determines how the image should be resized to fit its container. */
   objectFit?: 'cover' | 'contain';
+  /** If true, applies a Mike Mignola-inspired style to the image. */
+  isMignolaStyle?: boolean;
 }
 
-const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ imageUrl, isLoading, alt, objectFit = 'cover' }) => {
+const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ imageUrl, isLoading, alt, objectFit = 'cover', isMignolaStyle = false }) => {
   
   if (isLoading) {
     return (
@@ -34,8 +36,9 @@ const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ imageUrl, isLoading, 
   }
 
   const objectFitClass = objectFit === 'cover' ? 'object-cover' : 'object-contain';
+  const mignolaClass = isMignolaStyle ? 'mignola-style' : '';
 
-  return <img src={imageUrl} alt={alt} className={`w-full h-full animate-fade-in ${objectFitClass}`} />;
+  return <img src={imageUrl} alt={alt} className={`w-full h-full animate-fade-in ${objectFitClass} ${mignolaClass}`} />;
 };
 
 export default ImageWithLoader;
