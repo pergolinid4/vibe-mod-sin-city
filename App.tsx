@@ -45,6 +45,9 @@ import CaseSolvedModal from './components/organisms/modals/CaseSolvedModal';
 import { ModalType, showModal } from './store/uiSlice';
 import {
   hydrateImageCache,
+  regenerateAllImagesWithMignolaStyle,
+  regenerateSpecificImages,
+  clearImageCache, // Import clearImageCache
 } from './store/storySlice';
 
 /**
@@ -80,6 +83,13 @@ const App: React.FC = () => {
     dispatch(hydrateImageCache());
     if (!introPlayed) {
       dispatch(showModal({ type: 'introSlideshow' }));
+    }
+
+    // Check if images have already been regenerated with Mignola style
+    const hasRegeneratedMignola = localStorage.getItem('hasRegeneratedMignolaStyleImages');
+    if (!hasRegeneratedMignola) {
+      dispatch(regenerateAllImagesWithMignolaStyle());
+      localStorage.setItem('hasRegeneratedMignolaStyleImages', 'true');
     }
   }, [introPlayed, dispatch]);
 

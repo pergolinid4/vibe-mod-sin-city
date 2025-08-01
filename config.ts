@@ -43,7 +43,7 @@ export const API_CONFIG = {
   CONCURRENT_REQUEST_LIMIT: 4,
   /** A small delay in milliseconds between processing batches of image generation requests.
    * This is a good practice to avoid overwhelming the API. */
-  IMAGE_QUEUE_BATCH_DELAY: 1000,
+  IMAGE_QUEUE_BATCH_DELAY: 5000, // Increased delay to mitigate API rate limits
 };
 
 /**

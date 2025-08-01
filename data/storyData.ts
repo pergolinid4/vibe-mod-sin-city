@@ -42,7 +42,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-07-25T14:00:00Z",
                 platform: "Instagram",
                 content: "Just listed this beautiful property in Mill Valley! Who's ready for a fresh start? 🏡✨ #MarinRealEstate #DreamHome",
-                imageUrl: "https://example.com/daisy_listing.jpg", // Placeholder image URL
+                imageUrl: "https://via.placeholder.com/400x300?text=Daisy+Listing", // Generic placeholder image URL
                 likes: 80,
                 comments: 8,
                 shares: 1,
@@ -197,7 +197,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-03-03T17:00:00Z",
                 platform: "FaceBook",
                 content: "Throwback with Hank Bassett after a long day at the shop. Grateful for the years of friendship and loyalty.",
-                imageUrl: "https://example.com/carol_hank_photo.jpg", // Placeholder image URL for Hank's photo
+                imageUrl: "https://via.placeholder.com/400x300?text=Carol+and+Hank", // Generic placeholder image URL for Hank's photo
                 likes: 200,
                 comments: 30,
                 shares: 10,
@@ -260,7 +260,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-07-20T14:00:00Z",
                 platform: "Instagram",
                 content: "BOOM! Tagged and bagged. Stay quiet, stay deadly.",
-                imageUrl: "https://example.com/oliver_buck.jpg", // Placeholder image URL
+                imageUrl: "https://via.placeholder.com/400x300?text=Oliver+Buck", // Generic placeholder image URL
                 likes: 1500,
                 comments: 250,
                 shares: 80,
@@ -270,7 +270,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-07-15T10:00:00Z",
                 platform: "Instagram",
                 content: "Who’s your daddy?",
-                imageUrl: "https://example.com/oliver_elk.jpg", // Placeholder image URL
+                imageUrl: "https://via.placeholder.com/400x300?text=Oliver+Elk", // Generic placeholder image URL
                 likes: 1200,
                 comments: 180,
                 shares: 60,
@@ -280,7 +280,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-07-10T09:00:00Z",
                 platform: "Instagram",
                 content: "Big paws big checks.",
-                imageUrl: "https://example.com/oliver_bear_paw.jpg", // Placeholder image URL
+                imageUrl: "https://via.placeholder.com/400x300?text=Oliver+Bear+Paw", // Generic placeholder image URL
                 likes: 900,
                 comments: 100,
                 shares: 40,
@@ -290,7 +290,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-07-05T16:00:00Z",
                 platform: "Instagram",
                 content: "Eat clean, shoot dirty. New drop coming soon.",
-                imageUrl: "https://example.com/oliver_crossbow.jpg", // Placeholder image URL
+                imageUrl: "https://via.placeholder.com/400x300?text=Oliver+Crossbow", // Generic placeholder image URL
                 likes: 2000,
                 comments: 300,
                 shares: 100,
@@ -300,7 +300,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-06-28T11:00:00Z",
                 platform: "Instagram",
                 content: "Gear that gets you bloody. #WildTrailLegacy",
-                videoUrl: "https://example.com/oliver_gutting_deer.mp4", // Placeholder video URL
+                videoUrl: "https://via.placeholder.com/400x300?text=Oliver+Gutting+Deer+Video", // Generic placeholder video URL
                 likes: 1800,
                 comments: 280,
                 shares: 90,
@@ -430,7 +430,7 @@ export const storyData: StoryData = {
                 timestamp: "2025-03-03T17:00:00Z",
                 platform: "Instagram",
                 content: "Throwback with Hank Bassett after a long day at the shop. Grateful for the years of friendship and loyalty.",
-                imageUrl: "https://example.com/peter_hank_photo.jpg", // Placeholder image URL for Hank's photo
+                imageUrl: "https://via.placeholder.com/400x300?text=Peter+and+Hank", // Generic placeholder image URL for Hank's photo
                 likes: 200,
                 comments: 30,
                 shares: 10,
@@ -459,21 +459,21 @@ export const storyData: StoryData = {
               id: "peter-cctv-1",
               timestamp: "2025-07-10T15:42:00Z",
               locationName: "Ridge Trailhead",
-              videoUrl: "https://example.com/cctv_peter_ridge.mp4", // Placeholder video URL
+              videoUrl: "https://via.placeholder.com/400x300?text=Peter+CCTV+Ridge+Video", // Generic placeholder video URL
               description: "Peter checks trail cam mounted near ridge trailhead. Adjusts lens, scans area, then moves on.",
             },
             {
               id: "peter-cctv-2",
               timestamp: "2025-07-24T15:38:00Z",
               locationName: "Switchback Turn",
-              videoUrl: "https://example.com/cctv_peter_switchback.mp4", // Placeholder video URL
+              videoUrl: "https://via.placeholder.com/400x300?text=Peter+CCTV+Switchback+Video", // Generic placeholder video URL
               description: "Peter inspects cam overlooking switchback turn. Cleans lens and logs timestamp.",
             },
             {
               id: "peter-cctv-3",
               timestamp: "2025-08-07T15:47:00Z",
               locationName: "Base Station Cam",
-              videoUrl: "https://example.com/cctv_peter_base.mp4", // Placeholder video URL
+              videoUrl: "https://via.placeholder.com/400x300?text=Peter+CCTV+Base+Video", // Generic placeholder video URL
               description: "Peter reviews footage at base station cam. Alone, focused, visible in frame for several minutes.",
             },
           ],

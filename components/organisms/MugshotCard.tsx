@@ -26,7 +26,7 @@ const MugshotCard: React.FC<{ character: Character }> = ({ character }) => {
   const mugshotObject = useSelector((state: RootState) => selectObjectById(state, `obj_mugshot_${character.id}`));
   
   // Use the mugshot's prompt to generate the image.
-  const { imageUrl, isLoading } = useCardImage(mugshotObject || null, 'selectiveColor');
+  const { imageUrl, isLoading } = useCardImage(mugshotObject || null, 'mignolaStyle');
   
   const physicalChars = character.components.find(c => c.type === 'physicalCharacteristics')?.props;
 
@@ -37,7 +37,7 @@ const MugshotCard: React.FC<{ character: Character }> = ({ character }) => {
           <BackButton onClick={handleGoBack} />
         </header>
         
-        <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={`Mugshot of ${character.name}`} objectFit="contain" isMignolaStyle={true} />
+        <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={`Mugshot of ${character.name}`} objectFit="contain" colorTreatment={'mignolaStyle'} />
         
         <div className="absolute inset-0 bg-gradient-to-t from-brand-surface to-transparent"></div>
       </div>

@@ -28,7 +28,8 @@ const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
  */
 const SIN_CITY_STYLES = {
     monochrome: `Sin City style, hyper-detailed, high-contrast black and white, graphic novel art. Gritty, noir aesthetic with deep shadows and cinematic lighting. Sharp focus.`,
-    selectiveColor: `Sin City style, hyper-detailed, high-contrast black and white graphic novel art, with a single key element in vibrant, searing red color against the monochrome background. Gritty, noir aesthetic with deep shadows and cinematic lighting. Sharp focus.`
+    selectiveColor: `Sin City style, hyper-detailed, high-contrast black and white graphic novel art, with a single key element in vibrant, searing red color against the monochrome background. Gritty, noir aesthetic with deep shadows and cinematic lighting. Sharp focus.`,
+    mignolaStyle: `Mike Mignola style, vibrant colors, deep contrast, heavy shadows, dynamic composition, comic book art.`,
 };
 
 /**
@@ -113,8 +114,8 @@ export async function getInterrogationResponse(chat: Chat, message: string): Pro
  * @returns {Promise<{ mimeType: string; bytes: string } | null>} A structured object with image data, or null on failure after all retries.
  */
 export async function generateImage(
-    prompt: string, 
-    colorTreatment: 'monochrome' | 'selectiveColor' | 'map' = 'monochrome'
+    prompt: string,
+    colorTreatment: 'monochrome' | 'selectiveColor' | 'map' | 'mignolaStyle' = 'monochrome'
 ): Promise<{ mimeType: string; bytes: string } | null> {
 
     // --- ARCHITECTURAL FIX: Definitive Fix for Map Generation ---

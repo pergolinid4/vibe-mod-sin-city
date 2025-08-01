@@ -15,7 +15,7 @@ body {
 
 /* Mike Mignola style for images */
 .mignola-style {
-  filter: contrast(1.5) saturate(1.2) brightness(0.8); /* Adjust values for desired effect */
+  filter: contrast(2.0) saturate(2.5) brightness(0.7) sepia(0.3); /* Enhanced for vibrant colors and deep contrast */
   box-shadow: 5px 5px 0px rgba(0, 0, 0, 0.7); /* Deep contrast shadow */
   border: 2px solid black;
 }

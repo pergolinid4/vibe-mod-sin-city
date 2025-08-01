@@ -23,7 +23,7 @@ type Card = (Character | StoryObject | Location | { id: string; imagePrompt: str
  */
 export const useCardImage = (
   card: Card | null, 
-  colorTreatment: 'monochrome' | 'selectiveColor' | 'map'
+  colorTreatment: 'monochrome' | 'selectiveColor' | 'map' | 'mignolaStyle'
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   

@@ -23,7 +23,7 @@ import { showModal, checkMilestoneProgress, addNewlyAddedEvidenceId } from './ui
 interface ImageGenerationRequest {
   cardId: string;
   prompt: string;
-  colorTreatment: 'monochrome' | 'selectiveColor' | 'map';
+  colorTreatment: 'monochrome' | 'selectiveColor' | 'map' | 'mignolaStyle';
 }
 
 /**
@@ -425,10 +425,138 @@ export const clearImageCache = createAsyncThunk(
   }
 );
 
-export const { 
-    toggleSuspect, 
-    addToTimeline, 
-    removeFromTimeline, 
+/**
+ * Async thunk to regenerate all character and object images with the new Mignola style.
+ * This is a "hard reset" for the image cache, forcing all images to be re-generated.
+ */
+export const regenerateAllImagesWithMignolaStyle = createAsyncThunk(
+  'story/regenerateAllImagesWithMignolaStyle',
+  async (_, { dispatch, getState }) => {
+    // 1. Clear existing image cache (IndexedDB and Redux state)
+    await dispatch(clearImageCache());
+
+    const state = getState() as RootState;
+
+    // 2. Re-queue all character images
+    Object.values(state.story.characters.entities).forEach(character => {
+      if (character && character.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: character.id,
+          prompt: character.imagePrompt,
+          colorTreatment: 'mignolaStyle'
+        }));
+      }
+    });
+
+    // 3. Re-queue all object images
+    Object.values(state.story.objects.entities).forEach(obj => {
+      if (obj && obj.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: obj.id,
+          prompt: obj.imagePrompt,
+          colorTreatment: 'mignolaStyle'
+        }));
+      }
+    });
+
+    // 4. Re-queue all location images
+    Object.values(state.story.locations.entities).forEach(location => {
+      if (location && location.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: location.id,
+          prompt: location.imagePrompt,
+          colorTreatment: 'map' // Locations still use 'map' style
+        }));
+      }
+    });
+
+    // 5. Re-queue all evidence group images
+    Object.values(state.story.evidenceGroups.entities).forEach(group => {
+      if (group && group.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: group.id,
+          prompt: group.imagePrompt,
+          colorTreatment: 'mignolaStyle'
+        }));
+      }
+    });
+
+    // 6. Start processing the queue
+    dispatch(processImageGenerationQueue());
+  }
+);
+
+/**
+ * Async thunk to regenerate specific character or object images with a given style.
+ * This is useful for targeted regeneration without clearing the entire cache.
+ */
+export const regenerateSpecificImages = createAsyncThunk(
+  'story/regenerateSpecificImages',
+  async (cardIds: string[], { dispatch, getState }) => {
+    const state = getState() as RootState;
+
+    // Clear cache for only the specified card IDs
+    const currentImageUrls = { ...state.story.imageUrls };
+    const currentImageLoading = { ...state.story.imageLoading };
+    const currentImageErrors = { ...state.story.imageErrors };
+
+    cardIds.forEach(id => {
+      delete currentImageUrls[id];
+      delete currentImageLoading[id];
+      delete currentImageErrors[id];
+      // Also remove from the queue if it's there
+      state.story.imageGenerationQueue = state.story.imageGenerationQueue.filter(req => req.cardId !== id);
+    });
+
+    dispatch(storySlice.actions.setImageUrls(currentImageUrls));
+    cardIds.forEach(id => {
+      dispatch(storySlice.actions.setImageLoading({ cardId: id, isLoading: false }));
+      dispatch(storySlice.actions.setImageError({ cardId: id, hasError: false }));
+    });
+
+    // Re-queue specified character images
+    cardIds.forEach(id => {
+      const character = state.story.characters.entities[id];
+      const obj = state.story.objects.entities[id];
+      const location = state.story.locations.entities[id];
+      const evidenceGroup = state.story.evidenceGroups.entities[id];
+
+      if (character && character.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: character.id,
+          prompt: character.imagePrompt,
+          colorTreatment: 'mignolaStyle'
+        }));
+      } else if (obj && obj.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: obj.id,
+          prompt: obj.imagePrompt,
+          colorTreatment: 'mignolaStyle'
+        }));
+      } else if (location && location.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: location.id,
+          prompt: location.imagePrompt,
+          colorTreatment: 'map' // Locations still use 'map' style
+        }));
+      } else if (evidenceGroup && evidenceGroup.imagePrompt) {
+        dispatch(queueImageGeneration({
+          cardId: evidenceGroup.id,
+          prompt: evidenceGroup.imagePrompt,
+          colorTreatment: 'mignolaStyle'
+        }));
+      }
+    });
+
+    // Start processing the queue
+    dispatch(processImageGenerationQueue());
+  }
+);
+
+export const {
+    toggleSuspect,
+    addToTimeline,
+    removeFromTimeline,
     assignEvidenceToSuspect,
     queueImageGeneration,
     dequeueImageRequests,
@@ -442,7 +570,10 @@ export const {
     deductTokens,
     addTokens,
     setDynamicHotspotCoords,
+    clearImageCacheState, // Export clearImageCacheState for specific use
 } = storySlice.actions;
+
+
 
 // --- Base Selectors ---
 export const selectStoryTitle = (state: RootState) => state.story.title;

@@ -13,11 +13,11 @@ interface ImageWithLoaderProps {
   alt: string;
   /** Determines how the image should be resized to fit its container. */
   objectFit?: 'cover' | 'contain';
-  /** If true, applies a Mike Mignola-inspired style to the image. */
-  isMignolaStyle?: boolean;
+  /** The desired visual style for the image, influencing CSS classes. */
+  colorTreatment?: 'monochrome' | 'selectiveColor' | 'map' | 'mignolaStyle';
 }
 
-const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ imageUrl, isLoading, alt, objectFit = 'cover', isMignolaStyle = false }) => {
+const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ imageUrl, isLoading, alt, objectFit = 'cover', colorTreatment = 'monochrome' }) => {
   
   if (isLoading) {
     return (
@@ -36,9 +36,10 @@ const ImageWithLoader: React.FC<ImageWithLoaderProps> = ({ imageUrl, isLoading, 
   }
 
   const objectFitClass = objectFit === 'cover' ? 'object-cover' : 'object-contain';
-  const mignolaClass = isMignolaStyle ? 'mignola-style' : '';
+  // Dynamically apply style class based on colorTreatment
+  const styleClass = colorTreatment === 'mignolaStyle' ? 'mignola-style' : '';
 
-  return <img src={imageUrl} alt={alt} className={`w-full h-full animate-fade-in ${objectFitClass} ${mignolaClass}`} />;
+  return <img src={imageUrl} alt={alt} className={`w-full h-full animate-fade-in ${objectFitClass} ${styleClass}`} />;
 };
 
 export default ImageWithLoader;

@@ -103,7 +103,7 @@ const LocationCard: React.FC<{ location: Location }> = ({ location }) => {
         )}
         
         {/* The image is rendered underneath, but will only be visible once the loader is gone */}
-        <ImageWithLoader imageUrl={imageUrl} isLoading={false} alt={location.name} isMignolaStyle={true} />
+        <ImageWithLoader imageUrl={imageUrl} isLoading={false} alt={location.name} isMignolaStyle={true} objectFit="contain" />
         
         {/* Hotspots will render only after loading is fully complete, preventing pop-in. */}
         {!isContentLoading && visibleHotspots.map(hotspot => (

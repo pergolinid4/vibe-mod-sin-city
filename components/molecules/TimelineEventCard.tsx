@@ -88,7 +88,7 @@ const TimelineEventCard: React.FC<TimelineEventCardProps> = React.memo(({ eviden
     return (
         <div className={`bg-brand-surface rounded-lg shadow-lg w-72 flex-shrink-0 animate-snap-in transition-all duration-300 ${shadowClass} ${borderClasses}`} style={borderColorStyle}>
             <div className="h-48 bg-brand-bg relative">
-                <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={evidence.name} objectFit="cover" />
+                <ImageWithLoader imageUrl={imageUrl} isLoading={isLoading} alt={evidence.name} objectFit="contain" isMignolaStyle={true} />
                 {/* Visual indicator for a collapsed (expandable) card */}
                 {!isExpanded && (
                     <div className="absolute top-2 right-2 w-5 h-5 bg-brand-primary/80 text-white flex items-center justify-center rounded-full text-lg font-bold">
