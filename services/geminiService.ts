@@ -143,11 +143,13 @@ export async function generateImage(
             
             if (response?.generatedImages?.length > 0 && response.generatedImages[0].image?.imageBytes) {
                 const base64ImageBytes: string = response.generatedImages[0].image.imageBytes;
-                return { mimeType: 'image/jpeg', bytes: base64ImageBytes };
+                console.log(`[Gemini Service] Image generated successfully. MimeType: ${response.generatedImages[0].image.mimeType}, Bytes Length: ${base64ImageBytes.length}`);
+                return { mimeType: response.generatedImages[0].image.mimeType || 'image/jpeg', bytes: base64ImageBytes };
             } else {
                 const failureReason = response?.generatedImages?.[0]?.raiFilteredReason
                     ? `filtered due to ${response.generatedImages[0].raiFilteredReason}`
                     : 'no image data was returned';
+                console.warn(`[Gemini Service] Image generation succeeded but no valid image data: ${failureReason}`);
                 throw new Error(`Image generation succeeded but ${failureReason}.`);
             }
             
@@ -155,10 +157,8 @@ export async function generateImage(
             const errorMessage = String(error?.message || '');
             const isRateLimitError = errorMessage.includes('429') || errorMessage.includes('RESOURCE_EXHAUSTED');
             const isServiceUnavailable = errorMessage.includes('503');
-            // --- FIX START: Retriable Error Check ---
             // A "no image data" response, often due to safety filtering, is now treated as a retriable condition.
             const isNoImageDataError = errorMessage.includes('Image generation succeeded but');
-            // --- FIX END ---
 
             if ((isRateLimitError || isServiceUnavailable || isNoImageDataError) && attempt < maxRetries) {
                 let delay = 5000 + Math.random() * 1000;

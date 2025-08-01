@@ -63,49 +63,49 @@ const getDb = (): Promise<IDBPDatabase> => {
  */
 export const dbService = {
   /**
-   * Saves an image Blob to the database.
+   * Saves an image as a base64 string to the database.
    * @param {string} id - The unique identifier for the image (e.g., card ID).
-   * @param {Blob} blob - The image data as a Blob.
+   * @param {string} base64Data - The base64 encoded image data.
    */
-  async saveImage(id: string, blob: Blob): Promise<void> {
+  async saveImageBase64(id: string, base64Data: string): Promise<void> {
     try {
         const db = await getDb();
-        await db.put(STORE_NAME, blob, id);
+        await db.put(STORE_NAME, base64Data, id);
     } catch (error) {
-        console.error("Failed to save image to IndexedDB:", error);
+        console.error("Failed to save base64 image to IndexedDB:", error);
     }
   },
 
   /**
-   * Retrieves an image Blob from the database.
+   * Retrieves an image as a base64 string from the database.
    * @param {string} id - The ID of the image to retrieve.
-   * @returns {Promise<Blob | undefined>} The image Blob, or undefined if not found.
+   * @returns {Promise<string | undefined>} The base64 image string, or undefined if not found.
    */
-  async getImage(id: string): Promise<Blob | undefined> {
+  async getImageBase64(id: string): Promise<string | undefined> {
     try {
         const db = await getDb();
         return db.get(STORE_NAME, id);
     } catch (error) {
-        console.error("Failed to get image from IndexedDB:", error);
+        console.error("Failed to get base64 image from IndexedDB:", error);
         return undefined;
     }
   },
 
   /**
-   * Retrieves all images from the database. Used for hydrating the cache on startup.
-   * @returns {Promise<{ id: string, blob: Blob }[]>} An array of objects containing image IDs and their corresponding Blobs.
+   * Retrieves all images as base64 strings from the database.
+   * @returns {Promise<{ id: string, base64: string }[]>} An array of objects containing image IDs and their base64 strings.
    */
-  async getAllImages(): Promise<{ id: string, blob: Blob }[]> {
+  async getAllImagesBase64(): Promise<{ id: string, base64: string }[]> {
     try {
         const db = await getDb();
         const keys = await db.getAllKeys(STORE_NAME);
-        const blobs = await db.getAll(STORE_NAME);
+        const base64s = await db.getAll(STORE_NAME);
         return keys.map((key, index) => ({
         id: String(key),
-        blob: blobs[index]
+        base64: String(base64s[index])
         }));
     } catch (error) {
-        console.error("Failed to get all images from IndexedDB:", error);
+        console.error("Failed to get all base64 images from IndexedDB:", error);
         return [];
     }
   },
@@ -117,6 +117,7 @@ export const dbService = {
     try {
         const db = await getDb();
         await db.clear(STORE_NAME);
+        console.log("IndexedDB 'images' store cleared successfully.");
     } catch (error) {
         console.error("Failed to clear IndexedDB:", error);
     }

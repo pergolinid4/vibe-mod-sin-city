@@ -511,13 +511,14 @@ const transformObjectData = (rawObjects: any[]): StoryObject[] => {
  */
 const transformLocationData = (rawData: any): Location[] => {
   const locationCoords: {[key: string]: { top: string, left: string }} = {
-    'loc_apothecary': { top: '50%', left: '50%' },
-    'loc_alley': { top: '45%', left: '65%' },
-    'loc_studio': { top: '60%', left: '35%' },
-    'loc_emily_apartment': { top: '30%', left: '40%' },
-    'loc_james_workshop': { top: '75%', left: '60%' },
-    'loc_workshop_lounge': { top: '0%', left: '0%' }, // Coords don't matter, won't be shown on map
-    'loc_apothecary_backroom': { top: '0%', left: '0%' } // Coords don't matter, won't be shown on map
+    'loc_trailhead': { top: '70%', left: '30%' },
+    'loc_murder_scene': { top: '50%', left: '45%' },
+    'loc_cliff_base': { top: '55%', left: '50%' }, // This is an internal location, coords don't matter for map
+    'loc_trembly_home': { top: '30%', left: '70%' },
+    'loc_wild_trail_supply': { top: '20%', left: '20%' },
+    'loc_hank_cabin': { top: '80%', left: '60%' },
+    'loc_peter_apartment': { top: '10%', left: '80%' },
+    'loc_oliver_apartment': { top: '40%', left: '10%' },
   };
 
   return rawData.locations.map((l: any) => {
@@ -584,13 +585,13 @@ const transformStoryData = (rawData: any): StoryData => {
     const evidenceStacks: EvidenceStack[] | undefined = rawData.evidenceStacks;
 
     // --- Robustness Fix: Find crime scene by ID instead of prompt text ---
-    const crimeScene = rawData.locations.find((l:any) => l.id === 'loc_apothecary');
+    const crimeScene = rawData.locations.find((l:any) => l.id === 'loc_murder_scene');
 
     return {
         title: rawData.storyInfo.title,
         storyInfo: {
             ...rawData.storyInfo,
-            mapTitle: 'San Francisco',
+            mapTitle: 'Mount Tamalpais',
             crimeSceneId: crimeScene?.id,
         },
         characters,

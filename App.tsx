@@ -29,6 +29,7 @@ import { RootState, AppDispatch } from './store';
 import GameScreen from './components/templates/GameScreen';
 import NavBar from './components/organisms/NavBar';
 import CountdownTimer from './components/molecules/CountdownTimer';
+import { dbService } from './services/dbService';
 
 // Import all modal components
 import PurchaseInfoModal from './components/organisms/modals/PurchaseInfoModal';
@@ -42,7 +43,7 @@ import PhaseCompleteModal from './components/organisms/modals/PhaseCompleteModal
 import InsightUnlockedModal from './components/organisms/modals/InsightUnlockedModal';
 import CaseSolvedModal from './components/organisms/modals/CaseSolvedModal';
 import { ModalType, showModal } from './store/uiSlice';
-import { 
+import {
   hydrateImageCache,
 } from './store/storySlice';
 

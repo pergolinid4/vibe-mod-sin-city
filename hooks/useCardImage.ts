@@ -5,7 +5,7 @@
  * to a centralized, sequential queue to be processed, preventing API rate-limiting.
  */
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
 import { queueImageGeneration, processImageGenerationQueue } from '../store/storySlice';
@@ -27,15 +27,35 @@ export const useCardImage = (
 ) => {
   const dispatch = useDispatch<AppDispatch>();
   
-  const imageUrl = useSelector((state: RootState) => (card ? state.story.imageUrls[card.id] : null));
+  const base64ImageUrl = useSelector((state: RootState) => (card ? state.story.imageUrls[card.id] : null));
   const isLoadingFromState = useSelector((state: RootState) => (card ? state.story.imageLoading[card.id] : false));
+
+  // State to hold the Object URL
+  const [objectUrl, setObjectUrl] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (base64ImageUrl) {
+      // If we have a base64 image, create an Object URL
+      setObjectUrl(base64ImageUrl);
+    } else {
+      // If no base64 image, clear the Object URL
+      setObjectUrl(null);
+    }
+
+    // Cleanup: revoke the Object URL when the component unmounts or the image changes
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [base64ImageUrl, objectUrl]); // Added objectUrl to dependency array
 
   useEffect(() => {
     // The core logic: dispatch to the queue only if...
     // 1. A valid card with an image prompt is provided.
-    // 2. An image URL is NOT already in the cache.
+    // 2. An image URL is NOT already in the cache (base64ImageUrl is null).
     // 3. The image is NOT already in the process of being loaded.
-    if (card && card.imagePrompt && !imageUrl && !isLoadingFromState) {
+    if (card && card.imagePrompt && !base64ImageUrl && !isLoadingFromState) {
       dispatch(queueImageGeneration({
           cardId: card.id,
           prompt: card.imagePrompt,
@@ -44,9 +64,9 @@ export const useCardImage = (
       // Kick off the queue processor. It has an internal guard to prevent multiple concurrent runs.
       dispatch(processImageGenerationQueue());
     }
-  }, [card, imageUrl, isLoadingFromState, colorTreatment, dispatch]);
+  }, [card, base64ImageUrl, isLoadingFromState, colorTreatment, dispatch]);
 
-  const isLoading = isLoadingFromState || (!imageUrl && !!card?.imagePrompt);
+  const isLoading = isLoadingFromState || (!objectUrl && !!card?.imagePrompt);
 
-  return { imageUrl: imageUrl ?? null, isLoading };
+  return { imageUrl: objectUrl, isLoading };
 };

@@ -34,21 +34,17 @@ export const hydrateImageCache = createAsyncThunk(
   'story/hydrateImageCache',
   async (_, { dispatch, getState }) => {
     try {
-      const cachedImages = await dbService.getAllImages();
+      // Retrieve base64 images from IndexedDB
+      const cachedImages = await dbService.getAllImagesBase64();
       const urls: { [id: string]: string } = {};
       const existingUrls = (getState() as RootState).story.imageUrls;
 
       for (const item of cachedImages) {
-        // --- CRITICAL FIX: Idempotent Hydration ---
-        // This check prevents a race condition where a pre-existing image URL
-        // from the initial state could be overwritten by a new one from IndexedDB,
-        // causing a visual "blink". If a URL for this ID already exists in the
-        // state, we do not create a new Object URL for it.
         if (existingUrls[item.id]) {
           continue;
         }
-        // Create a temporary, memory-efficient URL for the stored Blob.
-        urls[item.id] = URL.createObjectURL(item.blob);
+        // Store base64 directly in Redux state
+        urls[item.id] = `data:image/jpeg;base64,${item.base64}`;
       }
       
       if (Object.keys(urls).length > 0) {
@@ -177,10 +173,11 @@ export const processImageGenerationQueue = createAsyncThunk(
             try {
                 const imageResult = await generateImageAPI(request.prompt, request.colorTreatment);
                 if (imageResult) {
-                    const blob = b64toBlob(imageResult.bytes, imageResult.mimeType);
-                    await dbService.saveImage(request.cardId, blob);
-                    const objectURL = URL.createObjectURL(blob);
-                    dispatch(storySlice.actions.setImageUrl({ cardId: request.cardId, imageUrl: objectURL }));
+                    console.log(`Generated image for ${request.cardId}: mimeType=${imageResult.mimeType}, bytes length=${imageResult.bytes.length}`);
+                    // Save base64 directly to IndexedDB
+                    await dbService.saveImageBase64(request.cardId, imageResult.bytes);
+                    // Store base64 data URL in Redux state
+                    dispatch(storySlice.actions.setImageUrl({ cardId: request.cardId, imageUrl: `data:${imageResult.mimeType};base64,${imageResult.bytes}` }));
                 } else {
                     // **Critical Robustness Improvement**
                     // If image generation fails after retries, we mark it as having an error.
@@ -407,8 +404,26 @@ const storySlice = createSlice({
         const { locationId, coords } = action.payload;
         state.dynamicHotspotCoords[locationId] = coords;
     },
+    // New reducer to clear image cache state
+    clearImageCacheState(state) {
+      state.imageUrls = {};
+      state.imageLoading = {};
+      state.imageErrors = {};
+      state.imageGenerationQueue = [];
+      state.isProcessingQueue = false;
+    },
   },
 });
+
+// New async thunk to clear the image cache
+export const clearImageCache = createAsyncThunk(
+  'story/clearImageCache',
+  async (_, { dispatch }) => {
+    await dbService.clearImages();
+    // After clearing IndexedDB, also clear the Redux state
+    dispatch(storySlice.actions.clearImageCacheState());
+  }
+);
 
 export const { 
     toggleSuspect, 
