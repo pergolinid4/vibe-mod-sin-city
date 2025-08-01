@@ -95,6 +95,23 @@ export interface Sighting {
   description: string;
 }
 
+/** Represents a single social media post. */
+export interface SocialMediaPost {
+  id: string;
+  timestamp: string;
+  platform: string;
+  content: string;
+  imageUrl?: string;
+  likes?: number;
+  comments?: number;
+  shares?: number;
+}
+
+/** Props for the social media feed data component. */
+export interface SocialMediaFeedProps {
+  posts: SocialMediaPost[];
+}
+
 /** A single report within a police file. */
 export interface PoliceReport {
   id: string;
